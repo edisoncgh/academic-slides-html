@@ -29,6 +29,16 @@ Generate academic presentation **design drafts** as self-contained single HTML f
 - Literature review / survey talk
 - Conference talk preparation
 
+## Edge Cases
+
+| Scenario | Handling |
+|----------|----------|
+| No figures in source | Use diagrams/text-heavy layouts; create simple diagrams with HTML/CSS if needed |
+| Very long paper (>20 pages) | Focus on key sections; omit supplementary material; ask user which parts to prioritize |
+| Multiple papers | Ask user to select primary paper; others as related work only |
+| User wants custom theme | Offer 3 presets: Academic (default), Dark, Minimal; apply via CSS variables |
+| Content in non-English | Keep slide text in source language; add English key terms in parentheses |
+
 ## Prerequisites
 
 **Input format: Markdown is strongly recommended.**
@@ -39,7 +49,19 @@ If user provides PDF or docx:
 
 ## Workflow
 
+**Input → Output flow:**
+```
+User requirements (type, duration, source)
+  → Content analysis (structure, figures)
+    → Slide outline (titles, layouts, figure assignments)
+      → HTML file (self-contained)
+        → Speaking script (Markdown)
+```
+
 ### Step 1: Gather Information
+
+**Input:** User request
+**Output:** Requirements object (type, duration, source)
 
 Ask user these questions **one at a time**:
 
@@ -57,17 +79,48 @@ Ask user these questions **one at a time**:
 
 ### Step 2: Analyze Content
 
+**Input:** Markdown content
+**Output:** Content analysis summary + figure manifest
+
 1. Read the input content
-2. Identify paper structure (abstract, methods, experiments, conclusions)
+2. Identify paper structure using this checklist:
+   - **Problem**: What problem does the paper solve? (1 sentence)
+   - **Motivation**: Why is this problem important? (1-2 sentences)
+   - **Key insight**: What is the core idea/novelty? (1 sentence)
+   - **Method**: What approach is proposed? (2-3 bullet points)
+   - **Results**: What are the main quantitative results? (2-3 key numbers)
+   - **Conclusion**: What is the takeaway message? (1 sentence)
 3. **Discover all figures and tables** — list them with:
    - Figure/Table number
    - Caption
    - Location in document
 4. Estimate content density and complexity
 
+**⏸ Checkpoint:** Present the analysis summary to user for confirmation:
+- Paper structure overview
+- Figure/table manifest
+- Suggested slide count and rationale
+
+Ask: "以上分析是否准确？有需要补充或调整的图片/内容吗？" Wait for confirmation before proceeding.
+
 ### Step 3: Plan Slide Structure
 
-Based on presentation type and duration, plan the slide deck:
+**Input:** Content analysis + requirements
+**Output:** Slide outline (titles, layouts, figure assignments)
+
+Based on presentation type and duration, plan the slide deck.
+
+**Slide content rules:**
+- Each slide has ONE core message (the slide title should be a claim, not a topic)
+- Bullet points: max 4 per slide, each ≤15 words
+- Prefer figures over text — if a concept can be shown as a diagram, use it
+- Use two-column layout when combining text explanation with a figure
+
+**Good vs bad slide titles:**
+- ❌ "Method" (topic, not a message)
+- ✅ "We use attention to capture long-range dependencies" (claim)
+- ❌ "Results" (topic)
+- ✅ "Our method outperforms baselines by 5.2% on average" (claim)
 
 | Presentation Type | Default Structure |
 |-------------------|-------------------|
@@ -83,7 +136,17 @@ Based on presentation type and duration, plan the slide deck:
 
 Adjust based on content density. Prioritize clarity over completeness.
 
+**⏸ Checkpoint:** Present the slide outline to user:
+- Slide-by-slide title list with layout type (text/figure/two-column)
+- Which figures are assigned to which slides
+- Estimated total slide count and duration
+
+Ask: "这个幻灯片大纲是否OK？需要调整结构或增减页面吗？" Wait for confirmation before proceeding.
+
 ### Step 4: Extract and Assign Images
+
+**Input:** Figure manifest + slide outline
+**Output:** Base64-encoded images assigned to slides
 
 This is critical to avoid "text-only" slides.
 
@@ -107,20 +170,30 @@ This is critical to avoid "text-only" slides.
 
 ### Step 5: Generate HTML
 
-See [references/html-template.md](references/html-template.md) for:
-- HTML structure
-- CSS specifications
-- Slide layout patterns
+**Input:** Slide outline + base64 images
+**Output:** Single self-contained HTML file
 
-**Key constraints:**
-- Single self-contained HTML file
-- CSS scroll-snap for slide navigation
-- 16:9 aspect ratio
+**Key constraints (must follow):**
+- Single self-contained HTML file (no external dependencies)
+- CSS scroll-snap for slide navigation (`scroll-snap-type: y mandatory`)
+- 16:9 aspect ratio (`aspect-ratio: 16/9`)
 - System fonts: Chinese (SimSun/SimHei), English (Times New Roman)
 - Pure static, no JavaScript interactions
-- All images base64 embedded
+- All images base64 embedded (`data:image/png;base64,...`)
+- Slide numbering via CSS counter
+
+**HTML generation steps:**
+1. Create HTML skeleton with `<style>` block (see [references/html-template.md](references/html-template.md) for full CSS)
+2. For each slide in outline: generate `<section class="slide">` with appropriate layout (see [references/slide-layouts.md](references/slide-layouts.md) for patterns)
+3. Embed images as base64 `<img>` tags
+4. Add slide numbers via CSS counter
+
+**Output filename:** `{topic}.html`
 
 ### Step 6: Generate Speaking Script
+
+**Input:** Slide outline + content analysis
+**Output:** `{topic}-script.md`
 
 Create `{topic}-script.md` with:
 
@@ -139,6 +212,9 @@ Create `{topic}-script.md` with:
 ```
 
 ### Step 7: Output Summary
+
+**Input:** Generated artifacts
+**Output:** Summary message to user
 
 ```
 Slide Deck Complete!
