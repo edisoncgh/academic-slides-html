@@ -49,7 +49,19 @@ If user provides PDF or docx:
 
 ## Workflow
 
+**Input → Output flow:**
+```
+User requirements (type, duration, source)
+  → Content analysis (structure, figures)
+    → Slide outline (titles, layouts, figure assignments)
+      → HTML file (self-contained)
+        → Speaking script (Markdown)
+```
+
 ### Step 1: Gather Information
+
+**Input:** User request
+**Output:** Requirements object (type, duration, source)
 
 Ask user these questions **one at a time**:
 
@@ -66,6 +78,9 @@ Ask user these questions **one at a time**:
 - Paste content directly
 
 ### Step 2: Analyze Content
+
+**Input:** Markdown content
+**Output:** Content analysis summary + figure manifest
 
 1. Read the input content
 2. Identify paper structure using this checklist:
@@ -89,6 +104,9 @@ Ask user these questions **one at a time**:
 Ask: "以上分析是否准确？有需要补充或调整的图片/内容吗？" Wait for confirmation before proceeding.
 
 ### Step 3: Plan Slide Structure
+
+**Input:** Content analysis + requirements
+**Output:** Slide outline (titles, layouts, figure assignments)
 
 Based on presentation type and duration, plan the slide deck.
 
@@ -127,6 +145,9 @@ Ask: "这个幻灯片大纲是否OK？需要调整结构或增减页面吗？" W
 
 ### Step 4: Extract and Assign Images
 
+**Input:** Figure manifest + slide outline
+**Output:** Base64-encoded images assigned to slides
+
 This is critical to avoid "text-only" slides.
 
 **4.1 Image Discovery**
@@ -149,20 +170,30 @@ This is critical to avoid "text-only" slides.
 
 ### Step 5: Generate HTML
 
-See [references/html-template.md](references/html-template.md) for:
-- HTML structure
-- CSS specifications
-- Slide layout patterns
+**Input:** Slide outline + base64 images
+**Output:** Single self-contained HTML file
 
-**Key constraints:**
-- Single self-contained HTML file
-- CSS scroll-snap for slide navigation
-- 16:9 aspect ratio
+**Key constraints (must follow):**
+- Single self-contained HTML file (no external dependencies)
+- CSS scroll-snap for slide navigation (`scroll-snap-type: y mandatory`)
+- 16:9 aspect ratio (`aspect-ratio: 16/9`)
 - System fonts: Chinese (SimSun/SimHei), English (Times New Roman)
 - Pure static, no JavaScript interactions
-- All images base64 embedded
+- All images base64 embedded (`data:image/png;base64,...`)
+- Slide numbering via CSS counter
+
+**HTML generation steps:**
+1. Create HTML skeleton with `<style>` block (see [references/html-template.md](references/html-template.md) for full CSS)
+2. For each slide in outline: generate `<section class="slide">` with appropriate layout (see [references/slide-layouts.md](references/slide-layouts.md) for patterns)
+3. Embed images as base64 `<img>` tags
+4. Add slide numbers via CSS counter
+
+**Output filename:** `{topic}.html`
 
 ### Step 6: Generate Speaking Script
+
+**Input:** Slide outline + content analysis
+**Output:** `{topic}-script.md`
 
 Create `{topic}-script.md` with:
 
@@ -181,6 +212,9 @@ Create `{topic}-script.md` with:
 ```
 
 ### Step 7: Output Summary
+
+**Input:** Generated artifacts
+**Output:** Summary message to user
 
 ```
 Slide Deck Complete!
