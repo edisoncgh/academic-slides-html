@@ -65,6 +65,13 @@ Ask user these questions **one at a time**:
    - Location in document
 4. Estimate content density and complexity
 
+**⏸ Checkpoint:** Present the analysis summary to user for confirmation:
+- Paper structure overview
+- Figure/table manifest
+- Suggested slide count and rationale
+
+Ask: "以上分析是否准确？有需要补充或调整的图片/内容吗？" Wait for confirmation before proceeding.
+
 ### Step 3: Plan Slide Structure
 
 Based on presentation type and duration, plan the slide deck:
@@ -82,6 +89,13 @@ Based on presentation type and duration, plan the slide deck:
 - Long talk (30+ min): 20-30 slides
 
 Adjust based on content density. Prioritize clarity over completeness.
+
+**⏸ Checkpoint:** Present the slide outline to user:
+- Slide-by-slide title list with layout type (text/figure/two-column)
+- Which figures are assigned to which slides
+- Estimated total slide count and duration
+
+Ask: "这个幻灯片大纲是否OK？需要调整结构或增减页面吗？" Wait for confirmation before proceeding.
 
 ### Step 4: Extract and Assign Images
 
