@@ -29,6 +29,16 @@ Generate academic presentation **design drafts** as self-contained single HTML f
 - Literature review / survey talk
 - Conference talk preparation
 
+## Edge Cases
+
+| Scenario | Handling |
+|----------|----------|
+| No figures in source | Use diagrams/text-heavy layouts; create simple diagrams with HTML/CSS if needed |
+| Very long paper (>20 pages) | Focus on key sections; omit supplementary material; ask user which parts to prioritize |
+| Multiple papers | Ask user to select primary paper; others as related work only |
+| User wants custom theme | Offer 3 presets: Academic (default), Dark, Minimal; apply via CSS variables |
+| Content in non-English | Keep slide text in source language; add English key terms in parentheses |
+
 ## Prerequisites
 
 **Input format: Markdown is strongly recommended.**
