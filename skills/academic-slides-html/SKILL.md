@@ -58,7 +58,13 @@ Ask user these questions **one at a time**:
 ### Step 2: Analyze Content
 
 1. Read the input content
-2. Identify paper structure (abstract, methods, experiments, conclusions)
+2. Identify paper structure using this checklist:
+   - **Problem**: What problem does the paper solve? (1 sentence)
+   - **Motivation**: Why is this problem important? (1-2 sentences)
+   - **Key insight**: What is the core idea/novelty? (1 sentence)
+   - **Method**: What approach is proposed? (2-3 bullet points)
+   - **Results**: What are the main quantitative results? (2-3 key numbers)
+   - **Conclusion**: What is the takeaway message? (1 sentence)
 3. **Discover all figures and tables** — list them with:
    - Figure/Table number
    - Caption
@@ -74,7 +80,19 @@ Ask: "以上分析是否准确？有需要补充或调整的图片/内容吗？"
 
 ### Step 3: Plan Slide Structure
 
-Based on presentation type and duration, plan the slide deck:
+Based on presentation type and duration, plan the slide deck.
+
+**Slide content rules:**
+- Each slide has ONE core message (the slide title should be a claim, not a topic)
+- Bullet points: max 4 per slide, each ≤15 words
+- Prefer figures over text — if a concept can be shown as a diagram, use it
+- Use two-column layout when combining text explanation with a figure
+
+**Good vs bad slide titles:**
+- ❌ "Method" (topic, not a message)
+- ✅ "We use attention to capture long-range dependencies" (claim)
+- ❌ "Results" (topic)
+- ✅ "Our method outperforms baselines by 5.2% on average" (claim)
 
 | Presentation Type | Default Structure |
 |-------------------|-------------------|
